@@ -3,67 +3,70 @@
 Created by **Jason Abi Chebli**  
 © 2025 Jason Abi Chebli. All rights reserved.
 
-
 ## Code Authors
 Binh Tran, Jason Abi Chebli, Meshach Kumar, RVSS
 
 ## Description
-<div style="text-align: justify;">...</div>
+This project involves the development of an autonomous delivery robot capable of navigating Australian roads in both urban and rural environments. Using deep learning techniques, the system processes RGB camera images to generate steering commands, enabling the robot to drive autonomously while adhering to road rules, including stopping at designated stop signs. The project follows a structured workflow of data collection, model training, and deployment on a mobile robot.
 
-## Challenge 
-The task is to develop an autonomous delivery robot capable of safely and efficiently navigating Australian roads in both urban and rural environments. This involves deploying a deep neural network on a mobile robot to process RGB camera images and generate appropriate steering commands. Participants will follow a structured workflow, including data collection, labelling, network design, training, testing, and real-world deployment. The challenge culminates in a competition where teams navigate a designated track, encountering various road conditions and a stop sign that must be obeyed. The fastest and most accurate robots progress to the final round. Performance is scored based on delivery time, penalties for errors such as leaving the road or running a stop sign, and rewards for flawless navigation.
+## Challenge
+The task requires deploying a deep neural network on a mobile robot to process images and produce real-time steering commands. Participants must collect and label data, design and train a neural network, and test their models before deploying them on the robot. The competition consists of time trials on an unknown track, with penalties for errors such as leaving the road or failing to stop at a stop sign. The fastest and most accurate robots advance to the finals, where additional challenges are introduced.
 
 ## Collecting Data
-<div style="text-align: justify;">In our data collection method, we slowed dow the driving speed and collected a range of data during the day in the room the competition was held in. We ended up collecting around 3000 images. This data includes:</div>
-- Straight Urban Road
-- Straight Rural Road
-- Sharp Bends Urban Road
-- Sharp Bends Rural Road
-- Slight Turns Urban Road
-- Slight Turn Rural Road
-- Edge Case roads including train tracks, skid marks, pot holes etc.
+To ensure robust model training, we collected approximately 3,000 images by driving at a reduced speed in the competition room during the daytime. The dataset includes various road types:
+- Straight urban roads
+- Straight rural roads
+- Sharp bends in urban roads
+- Sharp bends in rural roads
+- Slight turns in urban roads
+- Slight turns in rural roads
+- Edge-case roads, including train tracks, skid marks, and potholes
 
-[Collecting Data Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/collect.py)
-[Data](https://github.com/jabichebli/autonomousDriving/tree/main/data)
+[Collecting Data Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/collect.py)  
+[Dataset](https://github.com/jabichebli/autonomousDriving/tree/main/data)
 
-## Training the Convulutional Neural Network 
-<div style="text-align: justify;">To make our system as robust as possible, the dataset we trained it on had the following transforms applied:</div>
--  Random Saturation Color Jitter
-- Random Contrast Color Jitter
-- Random Bridgness Color Jitter
-- Random Gray scale 
-- Random Erasing Horizontally and vertical bars
-- Resizing the image
-- Normalising the Data 
+## Training the Convolutional Neural Network
+To improve generalization and robustness, we applied several data augmentation techniques to the training set:
+- Random saturation color jitter
+- Random contrast color jitter
+- Random brightness color jitter
+- Random grayscale conversion
+- Random erasing (horizontal and vertical bars)
+- Image resizing
+- Data normalization
 
-<div style="text-align: justify;"> We Split the classification of the steering into 7 different groups including:</div>
-- sharp left 
-- left 
-- slight left 
-- straight 
- -slight right
-- right
-- sharp right
+We categorized steering commands into seven distinct groups:
+- Sharp left
+- Left
+- Slight left
+- Straight
+- Slight right
+- Right
+- Sharp right
 
-<div style="text-align: justify;">To ensure the model is trained fairly on all cases, all cases were randomly sampled with replacement (2x train dataset) to have even weights.</div>
+To balance the dataset and ensure fair training across all categories, we performed random sampling with replacement, effectively doubling the training dataset.
 
+The neural network architecture consists of three convolutional layers, incorporating batch normalization, ReLU activation, and dropout for regularization.
 
-<div style="text-align: justify;">The neural network consisted of three layers, using backNorm, ReLU and Dropout.</div>
+We trained the model for 400 epochs, achieving an accuracy of **__%**.
 
-
-<div style="text-align: justify;">We found that training out model to 400 Epochs was a good fit. With accuracy of: __%</div>
-
-
-<div style="text-align: justify;"></div>
-
+![Accuracy Curve](https://github.com/jabichebli/autonomousDriving/blob/main/results/Accuracy_Curve.jpg)  
+![Loss Curve](https://github.com/jabichebli/autonomousDriving/blob/main/results/Loss_Curve.jpg)  
+![Confusion Matrix](https://github.com/jabichebli/autonomousDriving/blob/main/results/Confusion_Matrix.jpg)
 
 [Train Neural Network Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/train_net.py)
 
-## Colour Thresholding (Stop Sign Detection) and Deploying the Neural Network on Raspberry Pi Penguin
-<div style="text-align: justify;">...</div>
+## Stop Sign Detection and Deployment on Raspberry Pi Penguin
+To detect stop signs, we implemented color thresholding within a specific region of the camera's view. If a red area within the predefined range is detected at the lower boundary of the image and is of sufficient size, the robot will stop for 1.25 seconds before resuming movement, with a cooldown of 3 seconds between detections.
 
-[Deploy Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/deploy.py)
+Additionally, we incorporated dynamic speed control based on the road conditions:
+- Maximum speed on straight paths
+- Slightly reduced speed on slight turns
+- Minimum speed on sharp turns
 
-## Acknowledgement
-Thanks to [RVSS](https://www.rvss.org.au/) who provided us with the [base repository](https://github.com/rvss-australia/RVSS_Need4Speed).
+Despite operating at higher speeds than during training, the model performed well in real-world testing. Ultimately, we secured **1st place** in the **Need4Speed Challenge** at **RVSS 2025**.
 
+[Deployment Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/deploy.py)
+
+## Acknowledgements
+Special thanks to [RVSS](https://www.rvss.org.au/) for providing the [base repository](https://github.com/rvss-australia/RVSS_Need4Speed).
