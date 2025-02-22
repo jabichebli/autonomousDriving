@@ -31,9 +31,8 @@ To improve generalization and robustness, we applied several data augmentation t
 - Random contrast color jitter
 - Random brightness color jitter
 - Random grayscale conversion
-- Random erasing (horizontal and vertical bars)
+- Random erasing (black horizontal and vertical bars)
 - Image resizing
-- Data normalization
 
 We categorized steering commands into seven distinct groups:
 - Sharp left
@@ -66,6 +65,7 @@ Additionally, we incorporated dynamic speed control based on the road conditions
 - Minimum speed on sharp turns
 
 <div style="text-align: justify;">Despite operating at higher speeds than during training, the model performed well in real-world testing. Ultimately, we secured <strong>1st place</strong> in the <strong>Need4Speed Challenge</strong> at <strong>RVSS 2025</strong>.</div>
+
 
 [Deployment Script](https://github.com/jabichebli/autonomousDriving/blob/main/scripts/deploy.py)
 
