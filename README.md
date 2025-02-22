@@ -51,6 +51,7 @@ The neural network architecture consists of three convolutional layers, incorpor
 We trained the model for 400 epochs, achieving an accuracy of **~75%**. 
 </div>
 
+
 <img src="https://raw.githubusercontent.com/jabichebli/autonomousDriving/main/results/Accuracy_Curve.jpg" width="40%"> <img src="https://raw.githubusercontent.com/jabichebli/autonomousDriving/main/results/Loss_Curve.jpg" width="40%">
 <img src="https://raw.githubusercontent.com/jabichebli/autonomousDriving/main/results/Confusion_Matrix.jpg" width="40%">
 
